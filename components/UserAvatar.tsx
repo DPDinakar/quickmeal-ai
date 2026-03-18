@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useAvatar } from "./AvatarContext";
+import { useUser } from "@/context/UserContext";
 
 export default function UserAvatar() {
-  const { avatar, setAvatar } = useAvatar();
+  const { avatarUrl, setAvatarUrl } = useUser();
   const [initial, setInitial] = useState("?");
 
   useEffect(() => {
@@ -16,7 +16,7 @@ export default function UserAvatar() {
       const data = await res.json();
 
       if (data.avatar_url) {
-        setAvatar(data.avatar_url);
+        setAvatarUrl(data.avatar_url);
       }
 
       if (data.email) {
@@ -24,17 +24,16 @@ export default function UserAvatar() {
       }
     }
 
-    if (!avatar) {
+    if (!avatarUrl) {
       loadAvatar();
     }
-  }, [avatar, setAvatar]);
+  }, [avatarUrl, setAvatarUrl]);
 
   return (
     <div className="w-10 h-10 rounded-full overflow-hidden border flex items-center justify-center bg-gray-200">
-
-      {avatar ? (
+      {avatarUrl ? (
         <img
-          src={avatar}
+          src={avatarUrl}
           alt="avatar"
           className="w-full h-full object-cover"
         />
@@ -43,7 +42,6 @@ export default function UserAvatar() {
           {initial}
         </span>
       )}
-
     </div>
   );
 }
